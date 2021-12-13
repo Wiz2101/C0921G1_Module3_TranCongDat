@@ -1,3 +1,4 @@
+drop database if exists xay_dung_csdl_quan_ly_ban_hang;
 create database xay_dung_csdl_quan_ly_ban_hang;
 use xay_dung_csdl_quan_ly_ban_hang;
 CREATE TABLE customer (
