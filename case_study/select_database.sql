@@ -407,21 +407,20 @@ WHERE
 -- bao gồm id (ma_nhan_vien, ma_khach_hang), ho_ten, email, so_dien_thoai, ngay_sinh, dia_chi.
 
 SELECT 
-    nv.ma_nhan_vien,
-    kh.ma_khach_hang,
-    nv.ho_ten 'ho_ten_nv',
-    kh.ho_ten 'ho_ten_kh',
-    nv.email 'email_nv',
-    kh.email 'email_kh',
-    nv.so_dien_thoai 'so_dien_thoai_nv',
-    kh.so_dien_thoai 'so_dien_thoai_kh',
-    nv.ngay_sinh 'ngay_sinh_nv',
-    kh.ngay_sinh 'ngay_sinh_kh',
-    nv.dia_chi 'dia_chi_nv',
-    kh.dia_chi 'dia_chi_kh'
+    ma_nhan_vien,
+    ho_ten,
+    email,
+    so_dien_thoai,
+    ngay_sinh,
+    dia_chi
 FROM
-    nhan_vien nv
-        JOIN
-    hop_dong hd ON hd.ma_nhan_vien = nv.ma_nhan_vien
-        JOIN
-    khach_hang kh ON kh.ma_khach_hang = hd.ma_khach_hang
+    nhan_vien 
+UNION ALL SELECT 
+    ma_khach_hang,
+    ho_ten,
+    email,
+    so_dien_thoai,
+    ngay_sinh,
+    dia_chi
+FROM
+    khach_hang
