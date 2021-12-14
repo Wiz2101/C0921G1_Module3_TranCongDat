@@ -162,15 +162,15 @@ ORDER BY ma_hop_dong ASC;
 -- Hiển thị thông tin các dịch vụ đi kèm đã được sử dụng bởi những khách hàng có ten_loai_khach là “Diamond” và có dia_chi ở “Vinh” hoặc “Quảng Ngãi”.
 
 SELECT 
-    dvdk.ma_dich_vu_di_kem, dvdk.ten_dich_vu_di_kem
+    dich_vu_di_kem.ma_dich_vu_di_kem, dich_vu_di_kem.ten_dich_vu_di_kem
 FROM
-    hop_dong hd
+    hop_dong hop_dong
         JOIN
-    hop_dong_chi_tiet hdct ON hd.ma_hop_dong = hdct.ma_hop_dong
+    hop_dong_chi_tiet hop_dong_chi_tiet ON hop_dong.ma_hop_dong = hop_dong_chi_tiet.ma_hop_dong
         JOIN
-    dich_vu_di_kem dvdk ON hdct.ma_dich_vu_di_kem = dvdk.ma_dich_vu_di_kem
+    dich_vu_di_kem dich_vu_di_kem ON hop_dong_chi_tiet.ma_dich_vu_di_kem = dich_vu_di_kem.ma_dich_vu_di_kem
         RIGHT JOIN
-    khach_hang kh ON hd.ma_khach_hang = kh.ma_khach_hang
+    khach_hang kh ON hop_dong.ma_khach_hang = kh.ma_khach_hang
         JOIN
     loai_khach lk ON kh.ma_loai_khach = lk.ma_loai_khach
 WHERE
@@ -281,23 +281,24 @@ HAVING COUNT(hop_dong.ma_nhan_vien) <= 3;
 -- Câu 16:
 -- Xóa những Nhân viên chưa từng lập được hợp đồng nào từ năm 2019 đến năm 2021.
 
--- DELETE FROM nhan_vien 
--- WHERE
---     nhan_vien.ma_nhan_vien in (SELECT 
---         nhan_vien.ma_nhan_vien
---     FROM
---         (SELECT 
---             *
---         FROM
---             nhan_vien)
---             LEFT JOIN
---         hop_dong ON hop_dong.ma_nhan_vien = nhan_vien.ma_nhan_vien
---     GROUP BY nhan_vien.ma_nhan_vien
---     HAVING COUNT(hop_dong.ma_nhan_vien) = 0);
+SELECT 
+    nhan_vien.ma_nhan_vien, nhan_vien.ho_ten
+FROM
+    nhan_vien
+WHERE
+    nhan_vien.ma_nhan_vien IN (SELECT 
+            nhan_vien.ma_nhan_vien
+        FROM
+            nhan_vien
+                LEFT JOIN
+            hop_dong ON hop_dong.ma_nhan_vien = nhan_vien.ma_nhan_vien
+        GROUP BY nhan_vien.ma_nhan_vien
+        HAVING COUNT(hop_dong.ma_nhan_vien) = 0);
     
 DELETE FROM nhan_vien 
 WHERE
-    nhan_vien.ma_nhan_vien IN (SELECT 
+    nhan_vien.ma_nhan_vien IN (
+    SELECT 
         *
     FROM
         (SELECT 
@@ -308,6 +309,119 @@ WHERE
         GROUP BY nhan_vien.ma_nhan_vien
         HAVING COUNT(hop_dong.ma_nhan_vien) = 0) tdlTmp);
 
+-- Câu 17:
+-- Cập nhật thông tin những khách hàng có ten_loai_khach từ Platinum lên Diamond, chỉ cập nhật những khách hàng đã từng đặt phòng 
+-- với Tổng Tiền thanh toán trong năm 2021 là lớn hơn 1.000.000 VNĐ.
 
+SELECT 
+    khach_hang.ma_khach_hang,
+    khach_hang.ho_ten,
+    khach_hang.ma_loai_khach,
+    SUM((dich_vu.chi_phi_thue) + (dich_vu_di_kem.gia * hop_dong_chi_tiet.so_luong)) 'tong_tien'
+FROM
+    khach_hang
+        JOIN
+    hop_dong ON hop_dong.ma_khach_hang = khach_hang.ma_khach_hang
+        JOIN
+    dich_vu ON dich_vu.ma_dich_vu = hop_dong.ma_dich_vu
+        JOIN
+    hop_dong_chi_tiet ON hop_dong_chi_tiet.ma_hop_dong = hop_dong.ma_hop_dong
+        JOIN
+    dich_vu_di_kem ON dich_vu_di_kem.ma_dich_vu_di_kem = hop_dong_chi_tiet.ma_dich_vu_di_kem
+GROUP BY khach_hang.ho_ten
+HAVING tong_tien >= 1000000
+    AND ma_loai_khach != 1;
 
+UPDATE khach_hang 
+SET 
+    khach_hang.ma_loai_khach = 1
+WHERE
+    khach_hang.ma_loai_khach = 2
+        AND khach_hang.ma_khach_hang IN (SELECT 
+            khach_hang.ma_khach_hang
+        FROM
+            (SELECT 
+                khach_hang.ma_khach_hang,
+                    ((dich_vu.chi_phi_thue) + (dich_vu_di_kem.gia * hop_dong_chi_tiet.so_luong)) 'tong_tien'
+            FROM
+                khach_hang
+            JOIN hop_dong ON hop_dong.ma_khach_hang = khach_hang.ma_khach_hang
+            JOIN dich_vu ON dich_vu.ma_dich_vu = hop_dong.ma_dich_vu
+            JOIN hop_dong_chi_tiet ON hop_dong_chi_tiet.ma_hop_dong = hop_dong.ma_hop_dong
+            JOIN dich_vu_di_kem ON dich_vu_di_kem.ma_dich_vu_di_kem = hop_dong_chi_tiet.ma_dich_vu_di_kem
+            GROUP BY khach_hang.ho_ten
+            HAVING tong_tien >= 1000000) tdlTmp);
 
+-- Câu 18:
+-- Xóa những khách hàng có hợp đồng trước năm 2021 (chú ý ràng buộc giữa các bảng).
+SELECT 
+    khach_hang.ma_khach_hang,
+    khach_hang.ho_ten,
+    hop_dong.ngay_lam_hop_dong
+FROM
+    hop_dong
+        JOIN
+    khach_hang ON khach_hang.ma_khach_hang = hop_dong.ma_khach_hang
+WHERE
+    YEAR(hop_dong.ngay_lam_hop_dong) < 2021;
+
+SET FOREIGN_KEY_CHECKS=0;
+DELETE FROM hop_dong 
+WHERE
+    YEAR(hop_dong.ngay_lam_hop_dong) < 2021;
+    
+-- Câu 19:
+-- Cập nhật giá cho các dịch vụ đi kèm được sử dụng trên 10 lần trong năm 2020 lên gấp đôi.
+SELECT 
+    hop_dong.ngay_lam_hop_dong,
+    dich_vu_di_kem.ma_dich_vu_di_kem,
+    SUM(hop_dong_chi_tiet.so_luong)
+FROM
+    hop_dong hop_dong
+        JOIN
+    hop_dong_chi_tiet hop_dong_chi_tiet ON hop_dong_chi_tiet.ma_hop_dong = hop_dong.ma_hop_dong
+        JOIN
+    dich_vu_di_kem dich_vu_di_kem ON dich_vu_di_kem.ma_dich_vu_di_kem = hop_dong_chi_tiet.ma_dich_vu_di_kem
+WHERE
+    YEAR(hop_dong.ngay_lam_hop_dong) = 2020
+GROUP BY dich_vu_di_kem.ma_dich_vu_di_kem;
+
+UPDATE dich_vu_di_kem 
+SET dich_vu_di_kem.gia = (dich_vu_di_kem.gia * 2)
+WHERE
+    dich_vu_di_kem.ma_dich_vu_di_kem IN (
+    SELECT ma_dich_vu_di_kem
+	FROM (
+    SELECT dich_vu_di_kem.ma_dich_vu_di_kem, hop_dong_chi_tiet.so_luong
+            FROM
+                hop_dong hop_dong
+            JOIN hop_dong_chi_tiet ON hop_dong_chi_tiet.ma_hop_dong = hop_dong.ma_hop_dong
+            JOIN dich_vu_di_kem ON dich_vu_di_kem.ma_dich_vu_di_kem = hop_dong_chi_tiet.ma_dich_vu_di_kem
+            WHERE
+                YEAR(hop_dong.ngay_lam_hop_dong) = 2020
+            GROUP BY dich_vu_di_kem.ma_dich_vu_di_kem
+			HAVING SUM(hop_dong_chi_tiet.so_luong) >= 10) tdlTmp);
+
+-- Câu 20:
+-- Hiển thị thông tin của tất cả các nhân viên và khách hàng có trong hệ thống, thông tin hiển thị 
+-- bao gồm id (ma_nhan_vien, ma_khach_hang), ho_ten, email, so_dien_thoai, ngay_sinh, dia_chi.
+
+SELECT 
+    nv.ma_nhan_vien,
+    kh.ma_khach_hang,
+    nv.ho_ten 'ho_ten_nv',
+    kh.ho_ten 'ho_ten_kh',
+    nv.email 'email_nv',
+    kh.email 'email_kh',
+    nv.so_dien_thoai 'so_dien_thoai_nv',
+    kh.so_dien_thoai 'so_dien_thoai_kh',
+    nv.ngay_sinh 'ngay_sinh_nv',
+    kh.ngay_sinh 'ngay_sinh_kh',
+    nv.dia_chi 'dia_chi_nv',
+    kh.dia_chi 'dia_chi_kh'
+FROM
+    nhan_vien nv
+        JOIN
+    hop_dong hd ON hd.ma_nhan_vien = nv.ma_nhan_vien
+        JOIN
+    khach_hang kh ON kh.ma_khach_hang = hd.ma_khach_hang
