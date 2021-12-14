@@ -85,13 +85,16 @@ FROM
         JOIN
     hop_dong ON dich_vu.ma_dich_vu = hop_dong.ma_dich_vu
 WHERE
-    dich_vu.ma_dich_vu NOT IN (SELECT 
-            hop_dong.ma_dich_vu
+    hop_dong.ma_dich_vu NOT IN (SELECT 
+            dich_vu.ma_dich_vu
         FROM
-            hop_dong
+            dich_vu
+                JOIN
+            hop_dong ON dich_vu.ma_dich_vu = hop_dong.ma_dich_vu
         WHERE
-            MONTH(hop_dong.ngay_lam_hop_dong) BETWEEN 1 AND 3)
-GROUP BY ten_dich_vu;
+            (MONTH(hop_dong.ngay_lam_hop_dong) BETWEEN 1 AND 3)
+                AND YEAR(hop_dong.ngay_lam_hop_dong) = 2021)
+GROUP BY ma_dich_vu;
 
 -- Câu 7:
 -- Hiển thị thông tin ma_dich_vu, ten_dich_vu, dien_tich, so_nguoi_toi_da, chi_phi_thue, ten_loai_dich_vu của tất cả các loại dịch vụ đã từng được khách hàng 

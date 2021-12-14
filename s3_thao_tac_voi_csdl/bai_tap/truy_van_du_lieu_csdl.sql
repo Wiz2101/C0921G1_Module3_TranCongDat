@@ -36,4 +36,4 @@ FROM
         JOIN
     mark ON student.student_id = mark.student_id
 GROUP BY mark
-ORDER BY mark ASC
+ORDER BY student_name ASC , mark ASC
