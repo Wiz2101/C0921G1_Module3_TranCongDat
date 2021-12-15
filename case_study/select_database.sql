@@ -124,12 +124,25 @@ GROUP BY ma_dich_vu;
 
 -- Câu 8:
 -- Hiển thị thông tin ho_ten khách hàng có trong hệ thống, với yêu cầu ho_ten không trùng nhau.
-
+-- Cách 1:
+SELECT DISTINCT
+    khach_hang.ho_ten
+FROM
+    khach_hang
+GROUP BY ho_ten;
+-- Cách 2:
 SELECT 
     khach_hang.ho_ten
 FROM
     khach_hang
-HAVING COUNT(khach_hang.ho_ten) > 1;
+GROUP BY ho_ten
+HAVING COUNT(khach_hang.ho_ten) = 1;
+-- Cách 3:
+SELECT 
+    khach_hang.ho_ten
+FROM
+    khach_hang
+GROUP BY khach_hang.ho_ten;
 
 -- Câu 9:
 -- Thực hiện thống kê doanh thu theo tháng, nghĩa là tương ứng với mỗi tháng trong năm 2021 thì sẽ có bao nhiêu khách hàng thực hiện đặt phòng.
@@ -426,4 +439,34 @@ UNION ALL SELECT
     ngay_sinh,
     dia_chi
 FROM
-    khach_hang
+    khach_hang;
+    
+-- Câu 21:
+-- Tạo khung nhìn có tên là v_nhan_vien để lấy được thông tin của tất cả các nhân viên có địa chỉ là “Hải Châu” 
+-- và đã từng lập hợp đồng cho một hoặc nhiều khách hàng bất kì với ngày lập hợp đồng là “12/12/2019”.
+
+CREATE VIEW v_nhan_vien AS
+SELECT nhan_vien.*
+FROM nhan_vien
+LEFT JOIN hop_dong ON hop_dong.ma_nhan_vien = nhan_vien.ma_nhan_vien
+WHERE nhan_vien.dia_chi REGEXP 'Đà Nẵng'
+HAVING count(hop_dong.ma_hop_dong) >= 1;
+
+-- Câu 22:
+-- Thông qua khung nhìn v_nhan_vien thực hiện cập nhật địa chỉ thành “Liên Chiểu” đối với tất cả các nhân viên được nhìn thấy bởi khung nhìn này.
+
+UPDATE v_nhan_vien
+SET dia_chi = 'Liên Chiểu';
+
+-- Câu 23:
+-- Tạo Stored Procedure sp_xoa_khach_hang dùng để xóa thông tin của một khách hàng nào đó với ma_khach_hang được truyền vào như là 1 tham số của sp_xoa_khach_hang.
+DELIMITER //
+CREATE PROCEDURE sp_xoa_khach_hang (ma_khach_hang_xoa int)
+BEGIN
+	SET FOREIGN_KEY_CHECKS = 0;
+	DELETE FROM khach_hang
+    WHERE ma_khach_hang = ma_khach_hang_xoa;
+END
+// DELIMITER ;
+
+CALL sp_xoa_khach_hang(2);
