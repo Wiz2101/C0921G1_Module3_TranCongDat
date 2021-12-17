@@ -244,9 +244,13 @@ FROM
     hop_dong_chi_tiet ON dich_vu_di_kem.ma_dich_vu_di_kem = hop_dong_chi_tiet.ma_dich_vu_di_kem
 GROUP BY dich_vu_di_kem.ma_dich_vu_di_kem
 HAVING SUM(so_luong) >= ALL (SELECT 
-        (so_luong)
+        SUM(so_luong)
     FROM
-        hop_dong_chi_tiet);
+        dich_vu_di_kem
+            JOIN
+        hop_dong_chi_tiet ON dich_vu_di_kem.ma_dich_vu_di_kem = hop_dong_chi_tiet.ma_dich_vu_di_kem
+    GROUP BY dich_vu_di_kem.ma_dich_vu_di_kem
+    HAVING SUM(so_luong));
 
 -- Câu 14:
 -- Hiển thị thông tin tất cả các Dịch vụ đi kèm chỉ mới được sử dụng một lần duy nhất. 
@@ -450,7 +454,7 @@ SELECT nhan_vien.*
 FROM nhan_vien
 LEFT JOIN hop_dong ON hop_dong.ma_nhan_vien = nhan_vien.ma_nhan_vien
 WHERE nhan_vien.dia_chi REGEXP 'Đà Nẵng'
-HAVING count(hop_dong.ma_hop_dong) >= 1;
+HAVING count(hop_dong.ma_hop_dong) >= 1; -- (Nối bảng)
 
 -- Câu 22:
 -- Thông qua khung nhìn v_nhan_vien thực hiện cập nhật địa chỉ thành “Liên Chiểu” đối với tất cả các nhân viên được nhìn thấy bởi khung nhìn này.

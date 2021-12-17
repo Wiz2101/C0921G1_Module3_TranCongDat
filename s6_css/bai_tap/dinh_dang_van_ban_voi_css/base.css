@@ -1,0 +1,27 @@
+* {
+    max-width: 70vw;
+}
+body{
+    font-family: "Times New Roman", serif;
+    font-weight: 500;
+    margin-left: 20vw;
+
+}
+
+p {
+    text-indent: 50px;
+    text-align: justify;
+}
+.bold {
+    font-weight: bold;
+}
+
+.light_blue {
+    color: #0e77c4;
+    font-weight: bold;
+}
+
+.dark_blue {
+    color: #291f8c;
+    font-weight: bold;
+}
