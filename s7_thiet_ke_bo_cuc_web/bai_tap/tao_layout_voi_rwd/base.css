@@ -1,0 +1,70 @@
+* {
+    box-sizing: border-box;
+}
+
+.header {
+    background-color: #222;
+    color: #7b7873;
+}
+
+#choosing {
+    position: absolute;
+    background-color: #080808;
+    color: #bcc0c5;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.list-item {
+    list-style-type: none;
+    padding: 0;
+    margin: auto;
+}
+
+.list-item li {
+    display: inline-block;
+    margin: 0 20px;
+    padding: 10px 20px;
+}
+
+.list-login {
+    list-style-type: none;
+}
+
+.list-login li {
+    margin: 0 20px;
+}
+
+.menu {
+    display: flex;
+    flex-flow: column;
+    text-align: center;
+}
+
+.menu a {
+    margin: 20px 0;
+}
+.main {
+    text-align: justify;
+    padding: 10px;
+}
+
+.ads {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.footer {
+    background-color: #555555;
+}
+
+.footer h4 {
+    color: white;
+    text-align: center;
+}
+
+
