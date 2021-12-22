@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="bootstrap-5.1.3-dist/css/bootstrap.rtl.min.css">
+    <style>
+        .image-grid{
+            padding: 5px;
+        }
+        .image-grid:hover {
+            box-shadow: 0 0 20px #888888;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand" href="#">
+            <img src="logo.png" alt="" width="auto" height="30px" aclass="d-inline-block align-text-top">
+            Responsive Image Gallery
+        </a>
+    </div>
+</nav>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <p class="text-center mt-2 bg-light fw-bold">Resize your browser to see the effect</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-3 col-md-6 col-sm-1 image-grid ">
+            <a href=""><img style="width: 100%; height: 200px" src="https://th.bing.com/th/id/R.bb0230b3cb7677afdb1af1e7c87b72ea?rik=egUSaayhymgxNg&pid=ImgRaw&r=0" class="img-fluid" alt="Lauterbrunnen"></a>
+            <div class="description text-center fw-bold p-3 border border-2">Lauterbrunnen</div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-1 image-grid">
+            <a href=""><img style="width: 100%; height: 200px" src="https://th.bing.com/th/id/R.4d9ad973aca5f0a5c1a5ac09d404a286?rik=Wr%2f0YUOd6ITqjg&pid=ImgRaw&r=0" class="img-fluid" alt="Nice"></a>
+            <div class="description text-center fw-bold p-3 border border-2">Nice</div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-1 image-grid">
+            <a href=""><img style="width: 100%; height: 200px" src="https://th.bing.com/th/id/R.d2b3d996cc76aba7cff8a2a9d44ddcc1?rik=JhB%2fOL25Vaeruw&pid=ImgRaw&r=0" class="img-fluid" alt="Hallstatt"></a>
+            <div class="description text-center fw-bold p-3 border border-2">Hallstall</div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-1 image-grid">
+            <a href=""><img style="width: 100%; height: 200px" src="https://th.bing.com/th/id/R.8e199ad7bfbc43dd4901948bb53928c0?rik=ZsQtFB3i9FWucg&pid=ImgRaw&r=0" class="img-fluid" alt="Aix-en-Province"></a>
+            <div class="description text-center fw-bold p-3 border border-2">Aix-en-Province</div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <p>This example use media queries to re-arrange the images on different screen sizes: for screens larger than 700px wide, it will show four images side by side, for screens smaller than 700px, it will show two images side by side. For screens smaller than 500px, the images will stack vertically (100%).</p>
+        </div>
+    </div>
+</div>
+<script src="bootstrap-5.1.3-dist/js/bootstrap.esm.min.js"></script>
+</body>
+</html>
