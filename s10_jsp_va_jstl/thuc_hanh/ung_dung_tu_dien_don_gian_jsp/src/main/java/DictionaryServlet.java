@@ -17,7 +17,7 @@ public class DictionaryServlet extends HttpServlet {
         dic.put("book", "Quyển vở");
         dic.put("computer", "Máy tính");
         String result;
-        if (inputWord != null) {
+        if (!inputWord.equals("")) {
             result = dic.get(inputWord);
         } else {
             result = "Not Found";
