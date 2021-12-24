@@ -25,6 +25,8 @@ public class DictionaryServlet extends HttpServlet {
         request.setAttribute("inputWord", inputWord);
         request.setAttribute("result", result);
         request.getRequestDispatcher("Dictionary.jsp").forward(request, response);
+        response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("utf-8");
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

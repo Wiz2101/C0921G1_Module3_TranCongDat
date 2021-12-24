@@ -1,9 +1,9 @@
 public class Customer {
-    String name;
-    int gender;
-    String dOB;
-    String address;
-    String img;
+    private String name;
+    private int gender;
+    private String dOB;
+    private String address;
+    private String img;
 
     public Customer() {
     }
