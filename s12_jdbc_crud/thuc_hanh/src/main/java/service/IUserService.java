@@ -21,4 +21,10 @@ public interface IUserService {
 
     public List<User> sortList(String sortValue);
 
+    public List<User> findAllUsers();
+
+    public void deleteUserProcedure(int id) throws SQLException;
+
+    public  void updateUserProcedure (int id, String name, String email, String country) throws SQLException;
+
 }

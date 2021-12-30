@@ -50,4 +50,19 @@ public class UserService implements IUserService {
     public List<User> sortList(String sortValue) {
         return this.iUserRepository.sortList(sortValue);
     }
+
+    @Override
+    public List<User> findAllUsers() {
+        return this.iUserRepository.findAllUsers();
+    }
+
+    @Override
+    public void deleteUserProcedure(int id) throws SQLException {
+        this.iUserRepository.deleteUserProcedure(id);
+    }
+
+    @Override
+    public void updateUserProcedure(int id, String name, String email, String country) throws SQLException {
+        this.iUserRepository.updateUserProcedure(id, name, email,country);
+    }
 }

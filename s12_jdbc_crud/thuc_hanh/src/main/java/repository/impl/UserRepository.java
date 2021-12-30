@@ -1,6 +1,7 @@
 package repository.impl;
 
 import bean.User;
+import com.mysql.cj.protocol.Resultset;
 import repository.IUserRepository;
 
 import java.sql.*;
@@ -156,7 +157,6 @@ public class UserRepository implements IUserRepository {
         List<User> sortList = new ArrayList<>();
         PreparedStatement preparedStatement = null;
         try {
-
             Connection connection = getConnection();
             switch (sortValue) {
                 case "ASC":
@@ -185,6 +185,58 @@ public class UserRepository implements IUserRepository {
         return sortList;
     }
 
+    @Override
+    public List<User> findAllUsers() {
+        List<User> customerList = new ArrayList<>();
+
+        try {
+            CallableStatement callableStatement =
+                    BaseRepository.connection.prepareCall(
+                            "call findAllUsers()");
+            ResultSet resultSet = callableStatement.executeQuery();
+
+            User users = null;
+            while(resultSet.next()) {
+                User user = new User();
+                users.setId(resultSet.getInt("id"));
+                users.setName(resultSet.getString("name"));
+                users.setEmail(resultSet.getString("email"));
+                users.setCountry(resultSet.getString("country"));
+
+                customerList.add(users);
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return customerList;
+    }
+
+    @Override
+    public void deleteUserProcedure(int id) throws SQLException {
+        try {
+            CallableStatement callableStatement = BaseRepository.connection.prepareCall("CALL deleteUser(?)");
+            callableStatement.setInt(1, id);
+            callableStatement.executeUpdate();
+        } catch (SQLException e){
+            printSQLException(e);
+        }
+    }
+
+    @Override
+    public void updateUserProcedure(int id, String name, String email, String country) throws SQLException {
+        try {
+            CallableStatement callableStatement = BaseRepository.connection.prepareCall("CALL updateUser(?,?,?,?)");
+            callableStatement.setInt(1,id);
+            callableStatement.setString(2,name);
+            callableStatement.setString(2,email);
+            callableStatement.setString(2,country);
+        } catch (SQLException e){
+            printSQLException(e);
+        }
+    }
+
     private void printSQLException(SQLException ex) {
         for (Throwable e : ex) {
             if (e instanceof SQLException) {
@@ -200,6 +252,8 @@ public class UserRepository implements IUserRepository {
             }
         }
     }
+
+
 
 
 }

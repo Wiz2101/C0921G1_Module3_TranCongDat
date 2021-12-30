@@ -64,6 +64,12 @@ public class UserServlet extends HttpServlet {
                 case "sort":
                     sortList(request,response);
                     break;
+                case "findAllUsers":
+                    findAllUsers(request,response);
+                case "deleteUserProcedure":
+                    deleteUserProcedure (request,response);
+                case "updateUserProcedure":
+                    updateUserProcedure(request,response);
                 default:
                     listUser(request, response);
                     break;
@@ -145,6 +151,36 @@ public class UserServlet extends HttpServlet {
 
         List<User> list = iUserService.sortList(sortValue);
         request.setAttribute("listUser",list);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("user/list.jsp");
+        dispatcher.forward(request, response);
+    }
+
+    private void findAllUsers (HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
+        List<User> userList = iUserService.findAllUsers();
+        request.setAttribute("listUser",userList);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("user/list.jsp");
+        dispatcher.forward(request,response);
+    }
+
+    public void deleteUserProcedure(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException{
+        String id = request.getParameter("id");
+        iUserService.deleteUserProcedure(Integer.parseInt(id));
+
+        List<User> listUser = iUserService.selectAllUsers();
+        request.setAttribute("listUser", listUser);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("user/list.jsp");
+        dispatcher.forward(request, response);
+    }
+
+    public void updateUserProcedure(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
+        String id = request.getParameter("id");
+        String name = request.getParameter("name");
+        String email = request.getParameter("email");
+        String country = request.getParameter("country");
+
+        iUserService.updateUserProcedure(Integer.parseInt(id),name,email,country);
+        List<User> listUser = iUserService.selectAllUsers();
+        request.setAttribute("listUser", listUser);
         RequestDispatcher dispatcher = request.getRequestDispatcher("user/list.jsp");
         dispatcher.forward(request, response);
     }
