@@ -2,10 +2,10 @@ package bean;
 
 public class Customer {
     int customerId;
-    int customerTypeId;
+    String customerTypeId;
     String customerName;
     String customerBirthday;
-    int customerGender;
+    String customerGender;
     String customerIdCard;
     String customerPhone;
     String customerEmail;
@@ -14,7 +14,18 @@ public class Customer {
     public Customer() {
     }
 
-    public Customer(int customerId, int customerTypeId, String customerName, String customerBirthday, int customerGender, String customerIdCard, String customerPhone, String customerEmail, String customerAddress) {
+    public Customer(String customerName, String customerBirthday, String customerGender, String customerTypeId, String customerIdCard, String customerPhone, String customerEmail, String customerAddress) {
+        this.customerName = customerName;
+        this.customerBirthday = customerBirthday;
+        this.customerGender = customerGender;
+        this.customerTypeId = customerTypeId;
+        this.customerIdCard = customerIdCard;
+        this.customerPhone = customerPhone;
+        this.customerEmail = customerEmail;
+        this.customerAddress = customerAddress;
+    }
+
+    public Customer(Integer customerId, String customerTypeId, String customerName, String customerBirthday, String customerGender, String customerIdCard, String customerPhone, String customerEmail, String customerAddress) {
         this.customerId = customerId;
         this.customerTypeId = customerTypeId;
         this.customerName = customerName;
@@ -34,11 +45,11 @@ public class Customer {
         this.customerId = customerId;
     }
 
-    public int getCustomerTypeId() {
+    public String getCustomerTypeId() {
         return customerTypeId;
     }
 
-    public void setCustomerTypeId(int customerTypeId) {
+    public void setCustomerTypeId(String customerTypeId) {
         this.customerTypeId = customerTypeId;
     }
 
@@ -58,11 +69,11 @@ public class Customer {
         this.customerBirthday = customerBirthday;
     }
 
-    public int getCustomerGender() {
+    public String getCustomerGender() {
         return customerGender;
     }
 
-    public void setCustomerGender(int customerGender) {
+    public void setCustomerGender(String customerGender) {
         this.customerGender = customerGender;
     }
 

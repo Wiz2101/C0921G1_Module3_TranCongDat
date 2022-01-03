@@ -1,6 +1,7 @@
 package repository.impl;
 
 import bean.Customer;
+import bean.CustomerType;
 import repository.ICustomerRepository;
 
 import java.sql.PreparedStatement;
@@ -11,11 +12,12 @@ import java.util.List;
 
 public class CustomerRepository implements ICustomerRepository {
 
-    private static final String INSERT_CUSTOMER_SQL = "INSERT INTO customer (customer_id,customer_name,customer_birthday,customer_gender,customer_id_card,customer_phone,customer_email,customer_address) VALUES (?,?,?,?,?,?,?,?)";
-    private static final String SELECT_CUSTOMER_SQL = "SELECT * FROM customer WHERE id=?";
+    private static final String INSERT_CUSTOMER_SQL = "INSERT INTO customer (customer_type_id,customer_name,customer_birthday,customer_gender,customer_id_card,customer_phone,customer_email,customer_address) VALUES (?,?,?,?,?,?,?,?)";
+    private static final String SELECT_CUSTOMER_SQL = "SELECT * FROM customer JOIN customer_type ON customer.customer_type_id = customer_type.customer_type_id WHERE customer_id = ?;";
     private static final String SELECT_ALL_CUSTOMER_SQL = "SELECT * FROM customer";
     private static final String DELETE_CUSTOMER_SQL = "DELETE FROM customer WHERE id=?";
-    private static final String UPDATE_CUSTOMER_SQL = "UPDATE customer SET customer_id=?,customer_name=?,customer_birthday=?,customer_gender=?,customer_id_card=?,customer_phone=?,customer_email=?,customer_address=?";
+    private static final String UPDATE_CUSTOMER_SQL = "UPDATE customer SET customer_type_id=?, customer_name=?,customer_birthday=?,customer_gender=?,customer_id_card=?,customer_phone=?,customer_email=?,customer_address=? WHERE id=?" ;
+    private static final String SELECT_CUSTOMER_TYPE_SQL = "SELECT * FROM customer_type";
 
     public CustomerRepository() {
     }
@@ -24,10 +26,10 @@ public class CustomerRepository implements ICustomerRepository {
     public void insertCustomer(Customer customer) throws SQLException {
         try {
             PreparedStatement preparedStatement = BaseRepository.getConnection().prepareStatement(INSERT_CUSTOMER_SQL);
-            preparedStatement.setInt(1, customer.getCustomerId());
+            preparedStatement.setInt(1,Integer.parseInt(customer.getCustomerTypeId()));
             preparedStatement.setString(2, customer.getCustomerName());
             preparedStatement.setString(3, customer.getCustomerBirthday());
-            preparedStatement.setInt(4, customer.getCustomerGender());
+            preparedStatement.setInt(4, Integer.parseInt(customer.getCustomerGender()));
             preparedStatement.setString(5, customer.getCustomerIdCard());
             preparedStatement.setString(6, customer.getCustomerPhone());
             preparedStatement.setString(7, customer.getCustomerEmail());
@@ -47,7 +49,7 @@ public class CustomerRepository implements ICustomerRepository {
             preparedStatement.setInt(1, id);
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
-                customer = new Customer(rs.getInt("customer_id"), rs.getInt("customerTypeId"), rs.getString("customer_name"), rs.getString("customer_birthday"), rs.getInt("customer_gender"), rs.getString("customer_id_card"), rs.getString("customer_phone"), rs.getString("customer_email"), rs.getString("customer_address"));
+                customer = new Customer(rs.getInt("customer_id"), rs.getString("customer_type_id"), rs.getString("customer_name"), rs.getString("customer_birthday"), rs.getString("customer_gender"), rs.getString("customer_id_card"), rs.getString("customer_phone"), rs.getString("customer_email"), rs.getString("customer_address"));
             }
         } catch (SQLException e) {
             printSQLException(e);
@@ -61,10 +63,10 @@ public class CustomerRepository implements ICustomerRepository {
         try {
             PreparedStatement preparedStatement = BaseRepository.getConnection().prepareStatement(SELECT_ALL_CUSTOMER_SQL);
             ResultSet rs = preparedStatement.executeQuery();
-            while (rs.next()){
-                customerList.add(new Customer(rs.getInt("customer_id"), rs.getInt("customerTypeId"), rs.getString("customer_name"), rs.getString("customer_birthday"), rs.getInt("customer_gender"), rs.getString("customer_id_card"), rs.getString("customer_phone"), rs.getString("customer_email"), rs.getString("customer_address")));
+            while (rs.next()) {
+                customerList.add(new Customer(rs.getInt("customer_id"), rs.getString("customer_type_id"), rs.getString("customer_name"), rs.getString("customer_birthday"), rs.getString("customer_gender"), rs.getString("customer_id_card"), rs.getString("customer_phone"), rs.getString("customer_email"), rs.getString("customer_address")));
             }
-        } catch (SQLException e){
+        } catch (SQLException e) {
             printSQLException(e);
         }
         return customerList;
@@ -76,24 +78,37 @@ public class CustomerRepository implements ICustomerRepository {
     }
 
     @Override
-    public boolean updateCustomer(Customer customer) throws SQLException {
-        boolean rowUpdated = false;
+    public void updateCustomer(Customer customer) throws SQLException {
         try {
             PreparedStatement preparedStatement = BaseRepository.getConnection().prepareStatement(UPDATE_CUSTOMER_SQL);
-            preparedStatement.setInt(1, customer.getCustomerId());
+            preparedStatement.setInt(1, Integer.parseInt(customer.getCustomerTypeId()));
             preparedStatement.setString(2, customer.getCustomerName());
             preparedStatement.setString(3, customer.getCustomerBirthday());
-            preparedStatement.setInt(4, customer.getCustomerGender());
+            preparedStatement.setInt(4, Integer.parseInt(customer.getCustomerGender()));
             preparedStatement.setString(5, customer.getCustomerIdCard());
             preparedStatement.setString(6, customer.getCustomerPhone());
             preparedStatement.setString(7, customer.getCustomerEmail());
             preparedStatement.setString(8, customer.getCustomerAddress());
-
-            rowUpdated = preparedStatement.executeUpdate() > 0;
-        } catch (SQLException e){
+            preparedStatement.setInt(9,customer.getCustomerId());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
             printSQLException(e);
         }
-        return rowUpdated;
+    }
+
+    @Override
+    public List<CustomerType> customerTypes() {
+        List<CustomerType> customerTypes = new ArrayList<>();
+        try {
+            PreparedStatement preparedStatement = BaseRepository.getConnection().prepareStatement(SELECT_CUSTOMER_TYPE_SQL);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()){
+                customerTypes.add(new CustomerType(rs.getInt("customer_type_id"), rs.getString("customer_type_name")));
+            }
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        return customerTypes;
     }
 
     @Override

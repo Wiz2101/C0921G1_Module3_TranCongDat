@@ -1,6 +1,7 @@
 package service.impl;
 
 import bean.Customer;
+import bean.CustomerType;
 import repository.ICustomerRepository;
 import repository.impl.CustomerRepository;
 import service.ICustomerService;
@@ -22,7 +23,29 @@ public class CustomerService implements ICustomerService {
 
     @Override
     public List<Customer> selectAllCustomers() {
-        return this.iCustomerRepository.selectAllCustomers();
+        List<Customer> customerList = iCustomerRepository.selectAllCustomers();
+        for (Customer cu:customerList){
+            if (cu.getCustomerGender().equals("1")){
+                cu.setCustomerGender("Male");
+            } else if (cu.getCustomerGender().equals("0")){
+                cu.setCustomerGender("Female");
+            }
+        }
+
+        for (Customer cuType:customerList){
+            if (cuType.getCustomerTypeId().equals("1")){
+                cuType.setCustomerTypeId("Diamond");
+            } else if (cuType.getCustomerTypeId().equals("2")){
+                cuType.setCustomerTypeId("Platinum");
+            } else if (cuType.getCustomerTypeId().equals("3")){
+                cuType.setCustomerTypeId("Gold");
+            } else if (cuType.getCustomerTypeId().equals("4")){
+                cuType.setCustomerTypeId("Silver");
+            } else if (cuType.getCustomerTypeId().equals("5")){
+                cuType.setCustomerTypeId("Member");
+            }
+        }
+        return customerList;
     }
 
     @Override
@@ -31,8 +54,12 @@ public class CustomerService implements ICustomerService {
     }
 
     @Override
-    public boolean updateCustomer(Customer customer) throws SQLException {
-        return this.iCustomerRepository.updateCustomer(customer);
+    public void updateCustomer(Customer customer) throws SQLException {
+        this.iCustomerRepository.updateCustomer(customer);
+    }
+
+    public List<CustomerType> customerTypes() {
+        return this.iCustomerRepository.customerTypes();
     }
 
     @Override

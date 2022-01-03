@@ -5,7 +5,7 @@ USE case_study;
 CREATE TABLE rent_type (
 	rent_type_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     rent_type_name VARCHAR(45),
-    rentcost DOUBLE
+    rent_cost DOUBLE
 );
 
 CREATE TABLE service_type (
@@ -26,7 +26,8 @@ CREATE TABLE service (
     standard_room VARCHAR(45),
     description_other_convenience VARCHAR(45),
     pool_area DOUBLE,
-    number_of_floors INT
+    number_of_floors INT,
+    service_status INT
 );
 
 CREATE TABLE customer_type (
@@ -44,7 +45,8 @@ CREATE TABLE customer (
     customer_id_card VARCHAR(45),
     customer_phone VARCHAR(45),
     customer_email VARCHAR(45),
-    customer_address VARCHAR(45)
+    customer_address VARCHAR(45),
+    customer_status INT
 );
 
 CREATE TABLE `position` (
@@ -96,7 +98,8 @@ CREATE TABLE employee (
     division_id INT,
     FOREIGN KEY (division_id) REFERENCES division (division_id),
     username VARCHAR(255),
-    FOREIGN KEY (username) REFERENCES `user`(username)
+    FOREIGN KEY (username) REFERENCES `user`(username),
+    employee_status INT DEFAULT(1)
 );
 
 CREATE TABLE contract (
