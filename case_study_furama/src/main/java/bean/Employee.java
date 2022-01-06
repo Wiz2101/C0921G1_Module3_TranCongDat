@@ -17,6 +17,15 @@ public class Employee {
     public Employee() {
     }
 
+    public Employee(int employeeId) {
+        this.employeeId = employeeId;
+    }
+
+    public Employee(int employeeId, String employeeName) {
+        this.employeeId = employeeId;
+        this.employeeName = employeeName;
+    }
+
     public Employee(String employeeName, String employeeBirthday, String employeeIdCard, double employeeSalary, String employeePhone, String employeeEmail, String employeeAddress, Position position, EducationDegree educationDegree, Division division, User user) {
         this.employeeName = employeeName;
         this.employeeBirthday = employeeBirthday;

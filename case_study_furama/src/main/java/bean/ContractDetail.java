@@ -9,6 +9,12 @@ public class ContractDetail {
     public ContractDetail() {
     }
 
+    public ContractDetail(Contract contract, AttachService attachService, int quality) {
+        this.contract = contract;
+        this.attachService = attachService;
+        this.quality = quality;
+    }
+
     public ContractDetail(int contractDetailId, Contract contract, AttachService attachService, int quality) {
         this.contractDetailId = contractDetailId;
         this.contract = contract;

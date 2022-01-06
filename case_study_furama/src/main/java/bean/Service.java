@@ -2,6 +2,7 @@ package bean;
 
 public class Service {
     int serviceId;
+    String serviceIdName;
     String serviceName;
     int serviceArea;
     double serviceCost;
@@ -16,7 +17,17 @@ public class Service {
     public Service() {
     }
 
-    public Service(String serviceName, int serviceArea, double serviceCost, int serviceMaxPeople, RentType rentType, ServiceType serviceType, String standardRoom, String descriptionOtherConvenience, double poolArea, int numberOfFloors) {
+    public Service(int serviceId) {
+        this.serviceId = serviceId;
+    }
+
+    public Service(int serviceId, String serviceName) {
+        this.serviceId = serviceId;
+        this.serviceName = serviceName;
+    }
+
+    public Service(String serviceIdName, String serviceName, int serviceArea, double serviceCost, int serviceMaxPeople, RentType rentType, ServiceType serviceType, String standardRoom, String descriptionOtherConvenience, double poolArea, int numberOfFloors) {
+        this.serviceIdName = serviceIdName;
         this.serviceName = serviceName;
         this.serviceArea = serviceArea;
         this.serviceCost = serviceCost;
@@ -29,8 +40,9 @@ public class Service {
         this.numberOfFloors = numberOfFloors;
     }
 
-    public Service(int serviceId, String serviceName, int serviceArea, double serviceCost, int serviceMaxPeople, RentType rentType, ServiceType serviceType, String standardRoom, String descriptionOtherConvenience, double poolArea, int numberOfFloors) {
+    public Service(int serviceId, String serviceIdName, String serviceName, int serviceArea, double serviceCost, int serviceMaxPeople, RentType rentType, ServiceType serviceType, String standardRoom, String descriptionOtherConvenience, double poolArea, int numberOfFloors) {
         this.serviceId = serviceId;
+        this.serviceIdName = serviceIdName;
         this.serviceName = serviceName;
         this.serviceArea = serviceArea;
         this.serviceCost = serviceCost;
@@ -49,6 +61,14 @@ public class Service {
 
     public void setServiceId(int serviceId) {
         this.serviceId = serviceId;
+    }
+
+    public String getServiceIdName() {
+        return serviceIdName;
+    }
+
+    public void setServiceIdName(String serviceIdName) {
+        serviceIdName = serviceIdName;
     }
 
     public String getServiceName() {

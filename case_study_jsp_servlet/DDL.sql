@@ -15,6 +15,7 @@ CREATE TABLE service_type (
 
 CREATE TABLE service (
 	service_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    service_id_name VARCHAR(10),
     service_name VARCHAR(45),
     service_area INT,
     service_cost DOUBLE,
@@ -27,7 +28,7 @@ CREATE TABLE service (
     description_other_convenience VARCHAR(45),
     pool_area DOUBLE,
     number_of_floors INT,
-    service_status INT
+    service_status INT DEFAULT (1)
 );
 
 CREATE TABLE customer_type (
@@ -37,6 +38,7 @@ CREATE TABLE customer_type (
 
 CREATE TABLE customer (
 	customer_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    customer_id_name VARCHAR(10),
     customer_type_id INT,
     FOREIGN KEY (customer_type_id) REFERENCES customer_type (customer_type_id),
     customer_name VARCHAR(45),
@@ -113,7 +115,8 @@ CREATE TABLE contract (
     customer_id INT,
     FOREIGN KEY (customer_id) REFERENCES customer (customer_id),
     service_id INT,
-    FOREIGN KEY (service_id) REFERENCES service (service_id)
+    FOREIGN KEY (service_id) REFERENCES service (service_id),
+    contract_status INT DEFAULT(1)
     );
 
 CREATE TABLE attach_service (
@@ -130,6 +133,7 @@ CREATE TABLE contract_detail (
     FOREIGN KEY (contract_id) REFERENCES contract (contract_id),
     attach_service_id INT,
     FOREIGN KEY (attach_service_id) REFERENCES attach_service (attach_service_id),
-    quantity INT
+    quantity INT,
+    contract_detail_status INT DEFAULT(1)
 );
 

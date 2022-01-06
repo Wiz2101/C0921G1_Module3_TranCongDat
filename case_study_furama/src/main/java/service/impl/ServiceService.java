@@ -6,16 +6,27 @@ import bean.ServiceType;
 import repository.IServiceRepository;
 import repository.impl.ServiceRepository;
 import service.IServiceService;
+import validate.Validates;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ServiceService implements IServiceService {
 
     IServiceRepository serviceRepository = new ServiceRepository();
     @Override
-    public void createService(Service service) throws SQLException {
-        this.serviceRepository.createService(service);
+    public Map<String,String> createService(Service service) throws SQLException {
+        Map<String,String> msgMap = new HashMap<>();
+
+        if (!Validates.serviceID(service.getServiceIdName())){
+            msgMap.put("serviceIdName","Invalid Service ID Name");
+        }
+        if (msgMap.isEmpty()) {
+            this.serviceRepository.createService(service);
+        }
+        return msgMap;
     }
 
     @Override
@@ -24,8 +35,16 @@ public class ServiceService implements IServiceService {
     }
 
     @Override
-    public void updateService(Service service) throws SQLException {
-        this.serviceRepository.updateService(service);
+    public Map<String,String> updateService(Service service) throws SQLException {
+        Map<String,String> msgMap = new HashMap<>();
+
+        if (!Validates.serviceID(service.getServiceIdName())){
+            msgMap.put("serviceIdName","Invalid Service ID Name");
+        }
+        if (msgMap.isEmpty()) {
+            this.serviceRepository.updateService(service);
+        }
+        return msgMap;
     }
 
     @Override

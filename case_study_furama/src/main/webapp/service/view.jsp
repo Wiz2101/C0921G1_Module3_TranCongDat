@@ -77,6 +77,7 @@
                     <thead>
                     <tr>
                         <th>ID</th>
+                        <th>ID Name</th>
                         <th>Service Name</th>
                         <th>Service Area</th>
                         <th>Service Cost</th>
@@ -95,6 +96,7 @@
                     <c:forEach var="serviceList" items="${serviceList}">
                         <tr>
                             <td><c:out value="${serviceList.serviceId}"></c:out></td>
+                            <td><c:out value="${serviceList.serviceIdName}"></c:out></td>
                             <td><c:out value="${serviceList.serviceName}"></c:out></td>
                             <td><c:out value="${serviceList.serviceArea}"></c:out></td>
                             <td><c:out value="${serviceList.serviceCost}"></c:out></td>

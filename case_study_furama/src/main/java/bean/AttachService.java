@@ -10,6 +10,15 @@ public class AttachService {
     public AttachService() {
     }
 
+    public AttachService(int attachServiceId) {
+        this.attachServiceId = attachServiceId;
+    }
+
+    public AttachService(int attachServiceId, String attachServiceName) {
+        this.attachServiceId = attachServiceId;
+        this.attachServiceName = attachServiceName;
+    }
+
     public AttachService(int attachServiceId, String attachServiceName, double attachServiceCost, String attachServiceUnit, String attachServiceStatus) {
         this.attachServiceId = attachServiceId;
         this.attachServiceName = attachServiceName;

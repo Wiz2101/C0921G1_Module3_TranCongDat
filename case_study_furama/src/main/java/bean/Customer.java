@@ -2,6 +2,7 @@ package bean;
 
 public class Customer {
     int customerId;
+    String customerIdName;
     CustomerType customerType;
     String customerName;
     String customerBirthday;
@@ -14,7 +15,18 @@ public class Customer {
     public Customer() {
     }
 
-    public Customer(CustomerType customerType, String customerName, String customerBirthday, String customerGender, String customerIdCard, String customerPhone, String customerEmail, String customerAddress) {
+    public Customer(int customerId) {
+        this.customerId = customerId;
+    }
+
+    public Customer(int customerId, String customerName) {
+        this.customerId = customerId;
+        this.customerName = customerName;
+    }
+
+
+    public Customer(String customerIdName, CustomerType customerType, String customerName, String customerBirthday, String customerGender, String customerIdCard, String customerPhone, String customerEmail, String customerAddress) {
+        this.customerIdName = customerIdName;
         this.customerType = customerType;
         this.customerName = customerName;
         this.customerBirthday = customerBirthday;
@@ -25,8 +37,9 @@ public class Customer {
         this.customerAddress = customerAddress;
     }
 
-    public Customer(int customerId, CustomerType customerType, String customerName, String customerBirthday, String customerGender, String customerIdCard, String customerPhone, String customerEmail, String customerAddress) {
+    public Customer(int customerId, String customerIdName, CustomerType customerType, String customerName, String customerBirthday, String customerGender, String customerIdCard, String customerPhone, String customerEmail, String customerAddress) {
         this.customerId = customerId;
+        this.customerIdName = customerIdName;
         this.customerType = customerType;
         this.customerName = customerName;
         this.customerBirthday = customerBirthday;
@@ -43,6 +56,14 @@ public class Customer {
 
     public void setCustomerId(int customerId) {
         this.customerId = customerId;
+    }
+
+    public String getCustomerIdName() {
+        return customerIdName;
+    }
+
+    public void setCustomerIdName(String customerIdName) {
+        this.customerIdName = customerIdName;
     }
 
     public CustomerType getCustomerType() {

@@ -1,6 +1,7 @@
 package repository.impl;
 
 import bean.*;
+import org.omg.CORBA.BAD_CONTEXT;
 import repository.IEmployeeRepository;
 
 import java.sql.PreparedStatement;
@@ -17,6 +18,9 @@ public class EmployeeRepository implements IEmployeeRepository {
     private static final String SELECT_DIVISION_SQL = "SELECT * FROM division";
     private static final String SELECT_USER_SQL = "SELECT * FROM `user`";
     private static final String INSERT_INTO_EMPLOYEE_SQL = "INSERT INTO employee (employee_name,employee_birthday,employee_id_card,employee_salary,employee_phone,employee_email,employee_address,position_id,education_degree_id,division_id,username) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+    private static final String SELECT_EMPLOYEE_BY_ID_SQL = "SELECT * FROM employee JOIN `position` ON `position`.position_id = employee.position_id JOIN education_degree ON education_degree.education_degree_id = employee.education_degree_id JOIN division ON division.division_id = employee.division_id JOIN `user` ON `user`.username = employee.username WHERE employee_id = ?";
+    private static final String UPDATE_EMPLOYEE_BY_ID_SQL = "UPDATE employee SET employee_name=?,employee_birthday=?,employee_id_card=?,employee_salary=?,employee_phone=?,employee_email=?,employee_address=?,position_id=?,education_degree_id=?,division_id=?,username=? WHERE employee_id = ?";
+    private static final String DELETE_EMPLOYEE_BY_ID_SQL = "UPDATE employee SET employee_status=0 WHERE employee_id=?";
 
     @Override
     public void createEmployee(Employee employee) throws SQLException {
@@ -41,12 +45,35 @@ public class EmployeeRepository implements IEmployeeRepository {
 
     @Override
     public void deleteEmployee(int id) throws SQLException {
-
+        try {
+            PreparedStatement preparedStatement = BaseRepository.getConnection().prepareStatement(DELETE_EMPLOYEE_BY_ID_SQL);
+            preparedStatement.setInt(1,id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e){
+            printSQLException(e);
+        }
     }
 
     @Override
     public void updateEmployee(Employee employee) throws SQLException {
-
+        try {
+            PreparedStatement preparedStatement = BaseRepository.getConnection().prepareStatement(UPDATE_EMPLOYEE_BY_ID_SQL);
+            preparedStatement.setString(1,employee.getEmployeeName());
+            preparedStatement.setString(2,employee.getEmployeeBirthday());
+            preparedStatement.setString(3,employee.getEmployeeIdCard());
+            preparedStatement.setDouble(4,employee.getEmployeeSalary());
+            preparedStatement.setString(5,employee.getEmployeePhone());
+            preparedStatement.setString(6,employee.getEmployeeEmail());
+            preparedStatement.setString(7,employee.getEmployeeAddress());
+            preparedStatement.setInt(8,employee.getPosition().getPositionId());
+            preparedStatement.setInt(9,employee.getEducationDegree().getEducationDegreeId());
+            preparedStatement.setInt(10,employee.getDivision().getDivisionId());
+            preparedStatement.setString(11,employee.getUser().getUsername());
+            preparedStatement.setInt(12,employee.getEmployeeId());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e){
+            printSQLException(e);
+        }
     }
 
     @Override
@@ -66,7 +93,18 @@ public class EmployeeRepository implements IEmployeeRepository {
 
     @Override
     public Employee selectEmployeeById(int id) {
-        return null;
+        Employee employee = new Employee();
+        try {
+            PreparedStatement preparedStatement = BaseRepository.getConnection().prepareStatement(SELECT_EMPLOYEE_BY_ID_SQL);
+            preparedStatement.setInt(1,id);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()){
+                employee = new Employee(rs.getInt("employee_id"),rs.getString("employee_name"),rs.getString("employee_birthday"),rs.getString("employee_id_card"),rs.getDouble("employee_salary"),rs.getString("employee_phone"),rs.getString("employee_email"),rs.getString("employee_address"),new Position(rs.getInt("position_id"),rs.getString("position_name")),new EducationDegree(rs.getInt("education_degree_id"),rs.getString("education_degree_name")),new Division(rs.getInt("division_id"),rs.getString("division_name")),new User(rs.getString("username"),rs.getString("password")));
+            }
+        } catch (SQLException e){
+            printSQLException(e);
+        }
+        return employee;
     }
 
     @Override

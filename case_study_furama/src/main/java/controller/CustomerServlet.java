@@ -16,11 +16,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-@WebServlet(name = "CustomerServlet", urlPatterns = {"","/customer"})
+@WebServlet(name = "CustomerServlet", urlPatterns = "/customer")
 public class CustomerServlet extends HttpServlet {
 
     ICustomerService customerService = new CustomerService();
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
         if (action == null) {
@@ -29,13 +31,13 @@ public class CustomerServlet extends HttpServlet {
         try {
             switch (action) {
                 case "create":
-                    createCustomer(request,response);
+                    createCustomer(request, response);
                     break;
                 case "edit":
-                    editCustomer(request,response);
+                    editCustomer(request, response);
                     break;
                 default:
-                    customerListDisplay(request,response);
+                    customerListDisplay(request, response);
             }
 
         } catch (SQLException throwables) {
@@ -51,19 +53,19 @@ public class CustomerServlet extends HttpServlet {
         try {
             switch (action) {
                 case "create":
-                    showCreateCustomer(request,response);
+                    showCreateCustomer(request, response);
                     break;
                 case "edit":
-                    showEditCustomer(request,response);
+                    showEditCustomer(request, response);
                     break;
                 case "delete":
-                    deleteCustomer(request,response);
+                    deleteCustomer(request, response);
                     break;
                 case "search":
-                    searchByKeyWord(request,response);
+                    searchByKeyWord(request, response);
                     break;
                 default:
-                    customerListDisplay(request,response);
+                    customerListDisplay(request, response);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -79,12 +81,13 @@ public class CustomerServlet extends HttpServlet {
 
     public void showCreateCustomer(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
         List<CustomerType> customerTypeList = customerService.selectCustomerType();
-        request.setAttribute("customerTypeList",customerTypeList);
+        request.setAttribute("customerTypeList", customerTypeList);
         RequestDispatcher dispatcher = request.getRequestDispatcher("customer/create.jsp");
-        dispatcher.forward(request,response);
+        dispatcher.forward(request, response);
     }
 
-    public void createCustomer (HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+    public void createCustomer(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+        String customerIdName = request.getParameter("customerIdName");
         String fullName = request.getParameter("fullName");
         String dOB = request.getParameter("dateOfBirth");
         String gender = request.getParameter("gender");
@@ -94,23 +97,31 @@ public class CustomerServlet extends HttpServlet {
         String email = request.getParameter("email");
         String address = request.getParameter("address");
 
-        Customer customer = new Customer(new CustomerType(customerType),fullName,dOB,gender,idCard,phoneNum,email,address);
+        Customer customer = new Customer(customerIdName, new CustomerType(customerType), fullName, dOB, gender, idCard, phoneNum, email, address);
         customerService.createCustomer(customer);
         response.sendRedirect("/customer");
+        Map<String, String> msgMap = customerService.createCustomer(customer);
+        if (msgMap.isEmpty()) {
+            customerService.createCustomer(customer);
+            response.sendRedirect("/customer");
+        } else {
+            showCreateCustomer(request, response);
+        }
     }
 
     public void showEditCustomer(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
         List<CustomerType> customerTypeList = customerService.selectCustomerType();
         int id = Integer.parseInt(request.getParameter("id"));
         Customer customer = customerService.selectCustomerById(id);
-        request.setAttribute("customerById",customer);
-        request.setAttribute("customerTypeList",customerTypeList);
+        request.setAttribute("customerById", customer);
+        request.setAttribute("customerTypeList", customerTypeList);
         RequestDispatcher dispatcher = request.getRequestDispatcher("customer/edit.jsp");
-        dispatcher.forward(request,response);
+        dispatcher.forward(request, response);
     }
 
     public void editCustomer(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
+        String customerIdName = request.getParameter("customerIdName");
         String fullName = request.getParameter("fullName");
         String dOB = request.getParameter("dateOfBirth");
         String gender = request.getParameter("gender");
@@ -119,9 +130,15 @@ public class CustomerServlet extends HttpServlet {
         String phoneNum = request.getParameter("phoneNum");
         String email = request.getParameter("email");
         String address = request.getParameter("address");
-        Customer customer = new Customer(id,new CustomerType(customerType),fullName,dOB,gender,idCard,phoneNum,email,address);
-        customerService.updateCustomer(customer);
-        response.sendRedirect("/customer");
+        Customer customer = new Customer(id, customerIdName, new CustomerType(customerType), fullName, dOB, gender, idCard, phoneNum, email, address);
+        Map<String, String> msgMap = customerService.createCustomer(customer);
+        request.setAttribute("customerIdName",msgMap.get("customerIdName"));
+        if (msgMap.isEmpty()) {
+            customerService.updateCustomer(customer);
+            response.sendRedirect("/customer");
+        } else {
+            showEditCustomer(request, response);
+        }
     }
 
     public void deleteCustomer(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
@@ -132,9 +149,9 @@ public class CustomerServlet extends HttpServlet {
     public void searchByKeyWord(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
         String keyword = request.getParameter("keyword");
         List<Customer> customerList = customerService.searchByName(keyword);
-        request.setAttribute("customerList",customerList);
+        request.setAttribute("customerList", customerList);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/customer/view.jsp");
-        dispatcher.forward(request,response);
+        dispatcher.forward(request, response);
     }
 
 }

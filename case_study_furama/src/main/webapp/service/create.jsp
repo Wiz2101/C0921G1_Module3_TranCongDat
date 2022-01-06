@@ -35,6 +35,20 @@
             </legend>
             <br>
 
+            <!-- Input ID Name-->
+
+            <div class="form-group">
+                <label class="col-md-4 control-label">Service ID Name</label>
+                <div class="col-md-4 inputGroupContainer">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                        <input name="serviceIdName" placeholder="DV-XXXXX [X:0-9]" class="form-control" type="text">
+                        <span style="color: darkred">${serviceIdName}</span>
+
+                    </div>
+                </div>
+            </div>
+
             <!-- Input Service Name-->
 
             <div class="form-group">

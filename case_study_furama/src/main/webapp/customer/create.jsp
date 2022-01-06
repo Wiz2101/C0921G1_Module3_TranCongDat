@@ -33,6 +33,19 @@
             </legend>
             <br>
 
+            <!-- Input ID Name-->
+
+            <div class="form-group">
+                <label class="col-md-4 control-label">Full Name</label>
+                <div class="col-md-4 inputGroupContainer">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                        <input name="customerIdName" placeholder="KH-XXXXX [X:0-9]" class="form-control" type="text">
+                        <span style="color: darkred">${customerIdName}</span>
+                    </div>
+                </div>
+            </div>
+
             <!-- Input Name-->
 
             <div class="form-group">

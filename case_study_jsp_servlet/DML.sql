@@ -38,17 +38,17 @@ insert into `user` values
 ('fb','123'),
 ('se','123'),
 ('mt','123');
-insert into customer (customer_type_id ,customer_name,customer_birthday,customer_gender,customer_id_card,customer_phone,customer_email,customer_address,customer_status)
-values (5,'Nguyễn Thị Hào','1970-11-07',0,'643431213','945423362','thihao07@gmail.com','23 Nguyễn Hoàng, Đà Nẵng',1),	
-(3,'Phạm Xuân Diệu','1992-08-08',1,'865342123','954333333','xuandieu92@gmail.com','K77/22 Thái Phiên, Quảng Trị',1),	
-(1,'Trương Đình Nghệ','1990-02-27',1,'488645199','373213122','nghenhan2702@gmail.com','K323/12 Ông Ích Khiêm, Vinh',1),	
-(1,'Dương Văn Quan','1981-07-08',1,'543432111','490039241','duongquan@gmail.com','K453/12 Lê Lợi, Đà Nẵng',1),	
-(4,'Hoàng Trần Nhi Nhi','1995-12-09',0,'795453345','312345678','nhinhi123@gmail.com','224 Lý Thái Tổ, Gia Lai',1),	
-(4,'Tôn Nữ Mộc Châu','2005-12-06',0,'732434215','988888844','tonnuchau@gmail.com','37 Yên Thế, Đà Nẵng',1),	
-(1,'Nguyễn Mỹ Kim','1984-04-08',0,'856453123','912345698','kimcuong84@gmail.com','K123/45 Lê Lợi, Hồ Chí Minh',1),	
-(3,'Nguyễn Thị Hào','1999-04-08',0,'965656433','763212345','haohao99@gmail.com','55 Nguyễn Văn Linh, Kon Tum',1),	
-(1,'Trần Đại Danh','1994-07-01',1,'432341235','643343433','danhhai99@gmail.com','24 Lý Thường Kiệt, Quảng Ngãi',1),	
-(2,'Nguyễn Tâm Đắc','1989-07-01',1,'344343432','987654321','dactam@gmail.com','22 Ngô Quyền, Đà Nẵng',1);
+insert into customer (customer_id_name,customer_type_id,customer_name,customer_birthday,customer_gender,customer_id_card,customer_phone,customer_email,customer_address,customer_status)
+values ('KH-00001',5,'Nguyễn Thị Hào','1970-11-07',0,'643431213','945423362','thihao07@gmail.com','23 Nguyễn Hoàng, Đà Nẵng',1),	
+('KH-00002',3,'Phạm Xuân Diệu','1992-08-08',1,'865342123','954333333','xuandieu92@gmail.com','K77/22 Thái Phiên, Quảng Trị',1),	
+('KH-00003',1,'Trương Đình Nghệ','1990-02-27',1,'488645199','373213122','nghenhan2702@gmail.com','K323/12 Ông Ích Khiêm, Vinh',1),	
+('KH-00004',1,'Dương Văn Quan','1981-07-08',1,'543432111','490039241','duongquan@gmail.com','K453/12 Lê Lợi, Đà Nẵng',1),	
+('KH-00005',4,'Hoàng Trần Nhi Nhi','1995-12-09',0,'795453345','312345678','nhinhi123@gmail.com','224 Lý Thái Tổ, Gia Lai',1),	
+('KH-00006',4,'Tôn Nữ Mộc Châu','2005-12-06',0,'732434215','988888844','tonnuchau@gmail.com','37 Yên Thế, Đà Nẵng',1),	
+('KH00007',1,'Nguyễn Mỹ Kim','1984-04-08',0,'856453123','912345698','kimcuong84@gmail.com','K123/45 Lê Lợi, Hồ Chí Minh',1),	
+('KH00008',3,'Nguyễn Thị Hào','1999-04-08',0,'965656433','763212345','haohao99@gmail.com','55 Nguyễn Văn Linh, Kon Tum',1),	
+('KH-00009',1,'Trần Đại Danh','1994-07-01',1,'432341235','643343433','danhhai99@gmail.com','24 Lý Thường Kiệt, Quảng Ngãi',1),	
+('KH-00010',2,'Nguyễn Tâm Đắc','1989-07-01',1,'344343432','987654321','dactam@gmail.com','22 Ngô Quyền, Đà Nẵng',1);
 insert into rent_type (rent_type_name,rent_cost)
 values
 ('year',80),
@@ -60,14 +60,14 @@ values
 ('Villa'),
 ('House'),
 ('Room');
-insert into service (service_name, service_area, service_cost, service_max_people , rent_type_id , service_type_id ,  standard_room , description_other_convenience , pool_area , number_of_floors, service_status)
+insert into service (service_id_name,service_name, service_area, service_cost, service_max_people , rent_type_id , service_type_id ,  standard_room , description_other_convenience , pool_area , number_of_floors, service_status)
 values
-('Villa Beach Front',25000,1000000,10,3,1,'vip','Có hồ bơi',500,4,1),
-('House Princess 01',14000,500000,7,2,2,'vip','Có thêm bếp nướng',null,3,1),
-('Room Twin 01',5000,100000,2,4,3,'normal','Có tivi',null,null,1),
-('Villa No Beach Front',22000,900000,8,3,1,'normal','Có hồ bơi',300,3,1),
-('House Princess 02',10000,400000,5,3,2,'normal','Có thêm bếp nướng',null,2,1),
-('Room Twin 02',3000,90000,2,4,3,'normal','Có tivi',null,null,1);
+('DV-00001','Villa Beach Front',25000,1000000,10,3,1,'vip','Có hồ bơi',500,4,1),
+('DV-00002','House Princess 01',14000,500000,7,2,2,'vip','Có thêm bếp nướng',null,3,1),
+('DV-00003','Room Twin 01',5000,100000,2,4,3,'normal','Có tivi',null,null,1),
+('DV-00004','Villa No Beach Front',22000,900000,8,3,1,'normal','Có hồ bơi',300,3,1),
+('DV-00005','House Princess 02',10000,400000,5,3,2,'normal','Có thêm bếp nướng',null,2,1),
+('DV-00006','Room Twin 02',3000,90000,2,4,3,'normal','Có tivi',null,null,1);
 insert into employee (employee_name,employee_birthday,employee_id_card,employee_salary,employee_phone,employee_email,employee_address,position_id,education_degree_id,division_id,username)
 values
  ('Nguyễn Văn An','1970-11-07','456231786',10000000,'0901234121','annguyen@gmail.com','295 Nguyễn Tất Thành, Đà Nẵng',1,3,1,'admin'),

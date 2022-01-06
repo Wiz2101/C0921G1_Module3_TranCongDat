@@ -1,0 +1,13 @@
+SELECT * FROM medical_record JOIN patient ON patient.patient_id = medical_record.patient_id  WHERE medical_record_delete_status = 1;
+INSERT INTO medical_record (medical_record_code,start_date,end_date,reason,patient_id) VALUES ("MC-0006","2021-12-13","2021-12-15","Sốt xuất huyết",1);
+SELECT * FROM medical_record JOIN patient ON patient.patient_id = medical_record.patient_id WHERE medical_record_id = 1;
+UPDATE medical_record SET medical_record_code = "MC-0008",start_date="2021-12-15",end_date="2021-12-19",reason="Tăng huyết áp", patient_id = 2 WHERE medical_record_id = 1;
+SELECT * FROM patient WHERE patient_delete_status = 1;
+SELECT * FROM patient;
+UPDATE patient SET patient_name = "Nguyễn Văn A" WHERE patient_id = 1;
+UPDATE medical_record SET start_date= "2021-12-15",end_date= "2021-12-22",reason= "ABC" WHERE medical_record_id = 1;
+INSERT INTO patient (patient_code,patient_name) VALUES ("PT-0006","Phạm Công Ga");
+SELECT * FROM medical_record;
+DELETE FROM patient WHERE patient_id=3;
+SELECT MAX(patient_id) FROM patient;
+UPDATE medical_record SET medical_record_delete_status = 0 WHERE medical_record_id = 10;

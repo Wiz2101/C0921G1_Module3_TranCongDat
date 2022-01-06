@@ -77,6 +77,7 @@
                     <thead>
                     <tr>
                         <th>ID</th>
+                        <th>ID Name</th>
                         <th>Name</th>
                         <th>Date of birth</th>
                         <th>Gender</th>
@@ -93,6 +94,7 @@
                     <c:forEach var="customerList" items="${customerList}">
                         <tr>
                             <td><c:out value="${customerList.customerId}"></c:out></td>
+                            <td><c:out value="${customerList.customerIdName}"></c:out></td>
                             <td><c:out value="${customerList.customerName}"></c:out></td>
                             <td><c:out value="${customerList.customerBirthday}"></c:out></td>
                             <td><c:out value="${customerList.customerGender}"></c:out></td>

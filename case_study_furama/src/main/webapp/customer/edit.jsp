@@ -41,7 +41,20 @@
                 <div class="col-md-4 inputGroupContainer">
                     <div class="input-group">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                        <input hidden name="id" value="${customerById.customerId}" class="form-control" type="text">
+                        <input readonly name="id" value="${customerById.customerId}" class="form-control" type="text">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Input ID Name-->
+
+            <div class="form-group">
+                <label class="col-md-4 control-label">ID Name</label>
+                <div class="col-md-4 inputGroupContainer">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                        <input name="customerIdName" value="${customerById.customerIdName}" placeholder="KH-XXXXX [X:0-9]" class="form-control" type="text">
+                        <span style="color: darkred">${customerIdName}</span>
                     </div>
                 </div>
             </div>
@@ -81,11 +94,11 @@
                         <span class="input-group-addon"><i class="glyphicon glyphicon-list"></i></span>
                         <c:if test="${customerById.customerGender == 0}">
                             <input type="radio" name="gender" value="1" style="margin: 20px" class="gender_option">Male
-                            <input type="radio" name="gender" value="2" style="margin: 20px" class="gender_option" checked>Female
+                            <input type="radio" name="gender" value="0" style="margin: 20px" class="gender_option" checked>Female
                         </c:if>
                         <c:if test="${customerById.customerGender == 1}">
                             <input type="radio" name="gender" value="1" style="margin: 20px" class="gender_option" checked>Male
-                            <input type="radio" name="gender" value="2" style="margin: 20px" class="gender_option">Female
+                            <input type="radio" name="gender" value="0" style="margin: 20px" class="gender_option">Female
                         </c:if>
                     </div>
                 </div>
